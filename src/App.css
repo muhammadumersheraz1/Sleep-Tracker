@@ -60,6 +60,13 @@
   color: #ffc9c9;
 }
 
+.quick-action-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
 .auth-banner code {
   color: var(--mint);
 }

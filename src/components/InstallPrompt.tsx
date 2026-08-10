@@ -36,7 +36,10 @@ export function InstallPrompt() {
     <div className="install-banner">
       <div>
         <strong>Install Lumen Sleep</strong>
-        <p>Add to your home screen for offline tracking.</p>
+        <p>
+          Add to your home screen, then long-press the icon for Sleep / Wake
+          shortcuts.
+        </p>
       </div>
       <div className="install-actions">
         <button

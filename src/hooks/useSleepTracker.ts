@@ -83,7 +83,7 @@ export function useSleepTracker() {
   const isSleeping = activeSession !== null
 
   const startSleep = useCallback(async () => {
-    if (!user || !db || activeSession || saving) return
+    if (!user || !db || activeSession || saving) return false
 
     setSaving(true)
     setError('')
@@ -97,16 +97,18 @@ export function useSleepTracker() {
         updatedAt: serverTimestamp(),
       })
       setNoteDraft('')
+      return true
     } catch (err) {
       console.error(err)
       setError('Could not start sleep session.')
+      return false
     } finally {
       setSaving(false)
     }
   }, [user, activeSession, saving, noteDraft])
 
   const wakeUp = useCallback(async () => {
-    if (!db || !activeSession || saving) return
+    if (!db || !activeSession || saving) return false
 
     setSaving(true)
     setError('')
@@ -118,9 +120,11 @@ export function useSleepTracker() {
         updatedAt: serverTimestamp(),
       })
       setNoteDraft('')
+      return true
     } catch (err) {
       console.error(err)
       setError('Could not save wake-up time.')
+      return false
     } finally {
       setSaving(false)
     }

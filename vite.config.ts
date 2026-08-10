@@ -12,6 +12,8 @@ export default defineConfig({
         'favicon.svg',
         'icons/apple-touch-icon.png',
         'icons/icon.svg',
+        'icons/shortcut-sleep.png',
+        'icons/shortcut-wake.png',
         'robots.txt',
         'sitemap.xml',
       ],
@@ -44,6 +46,34 @@ export default defineConfig({
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',
+          },
+        ],
+        shortcuts: [
+          {
+            name: 'Start sleep',
+            short_name: 'Sleep',
+            description: 'Start a sleep session now',
+            url: '/?action=sleep',
+            icons: [
+              {
+                src: 'icons/shortcut-sleep.png',
+                sizes: '192x192',
+                type: 'image/png',
+              },
+            ],
+          },
+          {
+            name: 'Wake up',
+            short_name: 'Wake',
+            description: 'End the current sleep session',
+            url: '/?action=wake',
+            icons: [
+              {
+                src: 'icons/shortcut-wake.png',
+                sizes: '192x192',
+                type: 'image/png',
+              },
+            ],
           },
         ],
       },

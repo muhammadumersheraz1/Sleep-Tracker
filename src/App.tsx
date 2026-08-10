@@ -8,6 +8,7 @@ import { MonthlyChart } from './components/MonthlyChart'
 import { NoteField } from './components/NoteField'
 import { SleepToggle } from './components/SleepToggle'
 import { useAuth } from './contexts/AuthContext'
+import { useQuickActionRunner } from './hooks/useQuickActionRunner'
 import { useSleepTracker } from './hooks/useSleepTracker'
 import {
   dayKey,
@@ -28,12 +29,25 @@ function TrackerApp() {
     noteDraft,
     setNoteDraft,
     toggle,
+    startSleep,
+    wakeUp,
     updateSession,
     deleteSession,
     loading,
     saving,
     error,
   } = useSleepTracker()
+
+  const {
+    status: quickStatus,
+    running: quickRunning,
+    dismissStatus,
+  } = useQuickActionRunner({
+    ready: !loading,
+    isSleeping,
+    startSleep,
+    wakeUp,
+  })
 
   const [now, setNow] = useState(() => new Date())
   const [month, setMonth] = useState(() => startOfMonth(new Date()))
@@ -108,6 +122,28 @@ function TrackerApp() {
           </div>
         )}
 
+        {(quickRunning || quickStatus) && (
+          <div
+            className={`app-banner quick-action-banner${quickStatus?.startsWith('Could not') ? ' error' : ''}`}
+            role="status"
+          >
+            <span>
+              {quickRunning
+                ? 'Applying home-screen action…'
+                : quickStatus}
+            </span>
+            {quickStatus && !quickRunning && (
+              <button
+                type="button"
+                className="ghost-btn"
+                onClick={dismissStatus}
+              >
+                Dismiss
+              </button>
+            )}
+          </div>
+        )}
+
         {loading ? (
           <div className="app-banner">Loading your sleep logs…</div>
         ) : (
@@ -122,18 +158,13 @@ function TrackerApp() {
               <SleepToggle
                 isSleeping={isSleeping}
                 onToggle={toggle}
-                elapsedLabel={saving ? 'Saving…' : elapsedLabel}
+                elapsedLabel={saving || quickRunning ? 'Saving…' : elapsedLabel}
               />
               <NoteField
                 value={noteDraft}
                 onChange={setNoteDraft}
                 isSleeping={isSleeping}
               />
-              <p className="multi-hint">
-                Your sleep sessions are saved to Firebase in the{' '}
-                <strong>sleeping logs</strong> collection. Multiple sessions in
-                one day are stored separately and summed into that day’s total.
-              </p>
             </section>
 
             <MonthlyChart
