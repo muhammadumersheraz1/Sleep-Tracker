@@ -25,7 +25,6 @@ function App() {
     noteDraft,
     setNoteDraft,
     toggle,
-    loadDemoData,
   } = useSleepTracker()
 
   const [now, setNow] = useState(() => new Date())
@@ -72,17 +71,7 @@ function App() {
           </p>
         </div>
         <div className="topbar-actions">
-          <div className="topbar-buttons">
-            <button
-              type="button"
-              className="ghost-btn"
-              onClick={loadDemoData}
-              title="Replace current data with sample sleep sessions"
-            >
-              Load demo
-            </button>
-            <ExportData sessions={sessions} />
-          </div>
+          <ExportData sessions={sessions} />
           <div className="today-pill" aria-label={`Today total sleep ${formatDurationShort(todayTotal)}`}>
             <span>Today</span>
             <strong>{formatDurationShort(todayTotal)}</strong>

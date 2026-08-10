@@ -11,7 +11,6 @@ A Progressive Web App to track sleep and wake cycles, notes, and monthly sleep p
 - Daily totals with expandable session details per date
 - Export data as JSON or CSV
 - Installable PWA with offline support
-- Demo data for quick testing
 
 ## Getting started
 

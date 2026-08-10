@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { SleepSession } from '../types'
-import { createDemoSessions } from '../utils/demoData'
 
 function createId() {
   return crypto.randomUUID()
@@ -11,31 +10,19 @@ const DEMO_SEEDED_KEY = 'sleep-tracker.demo-seeded.v1'
 
 function loadSessions(): SleepSession[] {
   try {
+    // Clear legacy demo seed flag from earlier versions.
+    localStorage.removeItem(DEMO_SEEDED_KEY)
+
     const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) {
-      const demo = createDemoSessions()
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(demo))
-      localStorage.setItem(DEMO_SEEDED_KEY, '1')
-      return demo
-    }
+    if (!raw) return []
 
     const parsed = JSON.parse(raw) as SleepSession[]
     if (!Array.isArray(parsed)) return []
 
-    // Seed demo data once for empty first-time / testing setups.
-    if (
-      parsed.length === 0 &&
-      localStorage.getItem(DEMO_SEEDED_KEY) !== '1'
-    ) {
-      const demo = createDemoSessions()
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(demo))
-      localStorage.setItem(DEMO_SEEDED_KEY, '1')
-      return demo
-    }
-
-    return parsed
+    // Drop previously seeded dummy sessions.
+    return parsed.filter((session) => !session.id.startsWith('demo-'))
   } catch {
-    return createDemoSessions()
+    return []
   }
 }
 
@@ -105,12 +92,6 @@ export function useSleepTracker() {
     setSessions((prev) => prev.filter((s) => s.id !== id))
   }, [])
 
-  const loadDemoData = useCallback(() => {
-    const demo = createDemoSessions()
-    localStorage.setItem(DEMO_SEEDED_KEY, '1')
-    setSessions(demo)
-  }, [])
-
   return {
     sessions,
     activeSession,
@@ -122,6 +103,5 @@ export function useSleepTracker() {
     wakeUp,
     updateNote,
     deleteSession,
-    loadDemoData,
   }
 }
