@@ -169,10 +169,6 @@ function TrackerApp() {
 
       <footer className="site-footer">
         <p>
-          <strong>Lumen Sleep</strong> syncs sleep duration, wake times, and
-          notes to your Firebase account.
-        </p>
-        <p>
           <a
             href="https://github.com/muhammadumersheraz1/Sleep-Tracker"
             rel="noopener noreferrer"
