@@ -16,6 +16,8 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  text-size-adjust: 100%;
 }
 
 *,
@@ -24,18 +26,42 @@
   box-sizing: border-box;
 }
 
+html {
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
 html,
 body,
 #root {
   min-height: 100%;
+  max-width: 100%;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
 }
 
 button,
 textarea,
 input {
   font: inherit;
+}
+
+/* Prevent iOS zoom on focus */
+textarea,
+input,
+select,
+button {
+  font-size: 16px;
+}
+
+@media (min-width: 641px) {
+  textarea,
+  input,
+  select,
+  button {
+    font-size: inherit;
+  }
 }

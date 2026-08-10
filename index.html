@@ -2,22 +2,127 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <title>Lumen Sleep | Free Sleep Tracker App with Timer &amp; Monthly Charts</title>
     <meta
       name="description"
-      content="Track sleep and wake cycles with timers, notes, and monthly patterns."
+      content="Lumen Sleep is a free sleep tracker PWA. Log sleep and wake times, add notes, track multiple sessions per day, and review monthly sleep patterns with daily totals."
     />
+    <meta
+      name="keywords"
+      content="sleep tracker, sleep app, sleep diary, sleep timer, wake tracker, sleep pattern chart, PWA sleep tracker, sleep log, insomnia tracker"
+    />
+    <meta name="author" content="Lumen Sleep" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="googlebot" content="index, follow" />
     <meta name="theme-color" content="#0a2a32" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="application-name" content="Lumen Sleep" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <link rel="canonical" href="https://muhammadumersheraz1.github.io/Sleep-Tracker/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Lumen Sleep" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://muhammadumersheraz1.github.io/Sleep-Tracker/" />
+    <meta
+      property="og:title"
+      content="Lumen Sleep | Free Sleep Tracker App with Timer &amp; Monthly Charts"
+    />
+    <meta
+      property="og:description"
+      content="Track sleep and wake cycles with a live timer, notes, multiple sessions per day, and monthly sleep pattern charts."
+    />
+    <meta
+      property="og:image"
+      content="https://muhammadumersheraz1.github.io/Sleep-Tracker/icons/icon-512.png"
+    />
+    <meta property="og:image:alt" content="Lumen Sleep app icon" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="Lumen Sleep | Free Sleep Tracker App"
+    />
+    <meta
+      name="twitter:description"
+      content="Log sleep and wake times, add notes, and review monthly sleep patterns in a free installable PWA."
+    />
+    <meta
+      name="twitter:image"
+      content="https://muhammadumersheraz1.github.io/Sleep-Tracker/icons/icon-512.png"
+    />
+
+    <!-- PWA / iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Lumen Sleep" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <title>Lumen Sleep — Sleep Tracker</title>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Lumen Sleep",
+        "alternateName": "Sleep Tracker",
+        "description": "Free sleep tracker progressive web app to log sleep and wake cycles, notes, and monthly sleep patterns.",
+        "url": "https://muhammadumersheraz1.github.io/Sleep-Tracker/",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Sleep and wake toggle with live timer",
+          "Optional notes for each sleep session",
+          "Multiple sleep cycles per day",
+          "Monthly sleep pattern chart",
+          "Daily totals with session details",
+          "Export sleep data as JSON or CSV",
+          "Installable offline-capable PWA"
+        ],
+        "screenshot": "https://muhammadumersheraz1.github.io/Sleep-Tracker/icons/icon-512.png",
+        "image": "https://muhammadumersheraz1.github.io/Sleep-Tracker/icons/icon-512.png",
+        "author": {
+          "@type": "Person",
+          "name": "muhammadumersheraz1",
+          "url": "https://github.com/muhammadumersheraz1"
+        },
+        "codeRepository": "https://github.com/muhammadumersheraz1/Sleep-Tracker"
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <main style="max-width: 40rem; margin: 2rem auto; padding: 0 1rem; font-family: system-ui, sans-serif; line-height: 1.6; color: #ecf4f2; background: #0a2a32;">
+        <h1>Lumen Sleep — Free Sleep Tracker</h1>
+        <p>
+          Lumen Sleep helps you track sleep and wake times, add session notes,
+          log multiple sleep cycles in a day, and review monthly sleep patterns
+          with daily totals.
+        </p>
+        <p>
+          Enable JavaScript to use the interactive sleep timer, charts, and
+          export tools. Source code:
+          <a href="https://github.com/muhammadumersheraz1/Sleep-Tracker" style="color: #7ec8b8;">
+            github.com/muhammadumersheraz1/Sleep-Tracker
+          </a>
+        </p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

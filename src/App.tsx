@@ -5,12 +5,12 @@ import { ExportData } from './components/ExportData'
 import { InstallPrompt } from './components/InstallPrompt'
 import { MonthlyChart } from './components/MonthlyChart'
 import { NoteField } from './components/NoteField'
-import { SessionList } from './components/SessionList'
 import { SleepToggle } from './components/SleepToggle'
 import { useSleepTracker } from './hooks/useSleepTracker'
 import {
   dayKey,
   formatDuration,
+  formatDurationShort,
   monthlyDailyTotals,
   sessionDurationSeconds,
   totalSleepForDay,
@@ -25,8 +25,6 @@ function App() {
     noteDraft,
     setNoteDraft,
     toggle,
-    updateNote,
-    deleteSession,
     loadDemoData,
   } = useSleepTracker()
 
@@ -68,29 +66,40 @@ function App() {
 
       <header className="topbar">
         <div>
-          <p className="brand">Lumen Sleep</p>
-          <h1>Track every rest</h1>
+          <h1 className="brand">Lumen Sleep</h1>
+          <p className="tagline">
+            Free sleep tracker with timer, notes, and monthly charts
+          </p>
         </div>
         <div className="topbar-actions">
-          <button
-            type="button"
-            className="ghost-btn"
-            onClick={loadDemoData}
-            title="Replace current data with sample sleep sessions"
-          >
-            Load demo
-          </button>
-          <ExportData sessions={sessions} />
-          <div className="today-pill">
+          <div className="topbar-buttons">
+            <button
+              type="button"
+              className="ghost-btn"
+              onClick={loadDemoData}
+              title="Replace current data with sample sleep sessions"
+            >
+              Load demo
+            </button>
+            <ExportData sessions={sessions} />
+          </div>
+          <div className="today-pill" aria-label={`Today total sleep ${formatDurationShort(todayTotal)}`}>
             <span>Today</span>
-            <strong>{formatDuration(todayTotal)}</strong>
+            <strong>{formatDurationShort(todayTotal)}</strong>
           </div>
         </div>
       </header>
 
-      <main className="layout">
+      <main className="layout" id="main-content">
         <InstallPrompt />
-        <section className="control-panel">
+
+        <section
+          className="control-panel"
+          aria-labelledby="tracker-heading"
+        >
+          <h2 id="tracker-heading" className="visually-hidden">
+            Sleep and wake tracker
+          </h2>
           <SleepToggle
             isSleeping={isSleeping}
             onToggle={toggle}
@@ -102,8 +111,8 @@ function App() {
             isSleeping={isSleeping}
           />
           <p className="multi-hint">
-            You can sleep and wake multiple times in a day — each cycle is saved
-            as its own session and summed into the daily total.
+            Track sleep and wake cycles anytime. Multiple sessions in one day
+            are saved separately and added into that day’s total.
           </p>
         </section>
 
@@ -115,34 +124,36 @@ function App() {
           canGoNext={canGoNext}
         />
 
-        <section className="panel">
+        <section className="panel" aria-labelledby="daily-totals-heading">
           <div className="section-heading">
             <div>
-              <h2>Daily totals</h2>
+              <h2 id="daily-totals-heading">Daily totals</h2>
               <p>
                 {format(month, 'MMMM')} · {formatDuration(monthTotalSeconds)}{' '}
-                logged
+                logged — tap a date to view sessions
               </p>
             </div>
           </div>
-          <DailyTotals data={monthData} />
-        </section>
-
-        <section className="panel">
-          <div className="section-heading">
-            <div>
-              <h2>Sleep sessions</h2>
-              <p>All cycles with notes and timers</p>
-            </div>
-          </div>
-          <SessionList
-            sessions={sessions}
-            now={now}
-            onDelete={deleteSession}
-            onUpdateNote={updateNote}
-          />
+          <DailyTotals data={monthData} sessions={sessions} now={now} />
         </section>
       </main>
+
+      <footer className="site-footer">
+        <p>
+          <strong>Lumen Sleep</strong> is a free sleep tracker progressive web
+          app for logging sleep duration, wake times, notes, and monthly sleep
+          patterns.
+        </p>
+        <p>
+          <a
+            href="https://github.com/muhammadumersheraz1/Sleep-Tracker"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            View source on GitHub
+          </a>
+        </p>
+      </footer>
     </div>
   )
 }

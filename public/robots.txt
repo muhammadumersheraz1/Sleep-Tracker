@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://muhammadumersheraz1.github.io/Sleep-Tracker/sitemap.xml
