@@ -2,9 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-export default defineConfig(({ command }) => ({
-  // GitHub Pages project site needs a subpath; local/dev stays at root.
-  base: command === 'build' ? '/Sleep-Tracker/' : '/',
+export default defineConfig({
+  base: '/',
   plugins: [
     react(),
     VitePWA({
@@ -25,8 +24,8 @@ export default defineConfig(({ command }) => ({
         background_color: '#0a2a32',
         display: 'standalone',
         orientation: 'any',
-        start_url: './',
-        scope: './',
+        start_url: '/',
+        scope: '/',
         lang: 'en',
         categories: ['health', 'lifestyle', 'productivity'],
         icons: [
@@ -50,11 +49,11 @@ export default defineConfig(({ command }) => ({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,txt,xml,woff2}'],
-        navigateFallback: 'index.html',
+        navigateFallback: '/index.html',
       },
       devOptions: {
         enabled: true,
       },
     }),
   ],
-}))
+})

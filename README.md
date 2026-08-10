@@ -2,6 +2,8 @@
 
 A Progressive Web App to track sleep and wake cycles, notes, and monthly sleep patterns.
 
+**Live app:** [https://sleep-tracker-nine-pi.vercel.app/](https://sleep-tracker-nine-pi.vercel.app/)
+
 ## Features
 
 - Sleep / Wake toggle with live session timer
@@ -32,19 +34,14 @@ Open the local URL shown in the terminal (usually `http://localhost:5173`).
 
 ## Install as PWA
 
-1. Run `npm run build && npm run preview`
-2. Open the preview URL in Chrome/Edge/Safari
-3. Use **Install** / Add to Home Screen
+1. Open [the live app](https://sleep-tracker-nine-pi.vercel.app/) (or run `npm run build && npm run preview`)
+2. Use **Install** / Add to Home Screen in your browser
 
 ## SEO & deploy
 
-The app includes SEO-friendly HTML meta tags, Open Graph/Twitter cards, JSON-LD, `robots.txt`, and `sitemap.xml`.
+Deployed on Vercel with SEO meta tags, Open Graph/Twitter cards, JSON-LD, `robots.txt`, and `sitemap.xml`.
 
-Production builds use the GitHub Pages base path `/Sleep-Tracker/`. After deploying to GitHub Pages, the public URL is:
-
-`https://muhammadumersheraz1.github.io/Sleep-Tracker/`
-
-If you use a custom domain, update the canonical/Open Graph URLs in `index.html`, `public/robots.txt`, and `public/sitemap.xml`, and set `base: '/'` in `vite.config.ts`.
+Canonical site URL: `https://sleep-tracker-nine-pi.vercel.app/`
 
 ## Tech stack
 
