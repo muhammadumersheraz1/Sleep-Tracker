@@ -18,10 +18,24 @@ A Progressive Web App to track sleep and wake cycles, notes, and monthly sleep p
 
 ```bash
 npm install
+cp .env.example .env
+```
+
+Fill in your Firebase web app keys in `.env`, then:
+
+```bash
 npm run dev
 ```
 
 Open the local URL shown in the terminal (usually `http://localhost:5173`).
+
+### Firebase setup
+
+1. Create a Firebase project and enable **Authentication → Email/Password**
+2. Create a **Cloud Firestore** database
+3. Create a collection named exactly `sleeping logs` (documents are created by the app)
+4. Deploy the rules in `firestore.rules` (or paste them into the Firebase console)
+5. Add the same `VITE_FIREBASE_*` values in Vercel Environment Variables for production
 
 ## Scripts
 

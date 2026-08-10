@@ -1,11 +1,13 @@
 import { addMonths, format, isAfter, startOfMonth } from 'date-fns'
 import { useEffect, useMemo, useState } from 'react'
+import { AuthScreen } from './components/AuthScreen'
 import { DailyTotals } from './components/DailyTotals'
 import { ExportData } from './components/ExportData'
 import { InstallPrompt } from './components/InstallPrompt'
 import { MonthlyChart } from './components/MonthlyChart'
 import { NoteField } from './components/NoteField'
 import { SleepToggle } from './components/SleepToggle'
+import { useAuth } from './contexts/AuthContext'
 import { useSleepTracker } from './hooks/useSleepTracker'
 import {
   dayKey,
@@ -17,7 +19,8 @@ import {
 } from './utils/format'
 import './App.css'
 
-function App() {
+function TrackerApp() {
+  const { user, logout } = useAuth()
   const {
     sessions,
     activeSession,
@@ -25,6 +28,11 @@ function App() {
     noteDraft,
     setNoteDraft,
     toggle,
+    updateSession,
+    deleteSession,
+    loading,
+    saving,
+    error,
   } = useSleepTracker()
 
   const [now, setNow] = useState(() => new Date())
@@ -67,12 +75,24 @@ function App() {
         <div>
           <h1 className="brand">Lumen Sleep</h1>
           <p className="tagline">
-            Free sleep tracker with timer, notes, and monthly charts
+            {user?.displayName || user?.email
+              ? `Signed in as ${user.displayName || user.email}`
+              : 'Free sleep tracker with timer, notes, and monthly charts'}
           </p>
         </div>
         <div className="topbar-actions">
+          <button
+            type="button"
+            className="ghost-btn"
+            onClick={() => void logout()}
+          >
+            Log out
+          </button>
           <ExportData sessions={sessions} />
-          <div className="today-pill" aria-label={`Today total sleep ${formatDurationShort(todayTotal)}`}>
+          <div
+            className="today-pill"
+            aria-label={`Today total sleep ${formatDurationShort(todayTotal)}`}
+          >
             <span>Today</span>
             <strong>{formatDurationShort(todayTotal)}</strong>
           </div>
@@ -82,56 +102,75 @@ function App() {
       <main className="layout" id="main-content">
         <InstallPrompt />
 
-        <section
-          className="control-panel"
-          aria-labelledby="tracker-heading"
-        >
-          <h2 id="tracker-heading" className="visually-hidden">
-            Sleep and wake tracker
-          </h2>
-          <SleepToggle
-            isSleeping={isSleeping}
-            onToggle={toggle}
-            elapsedLabel={elapsedLabel}
-          />
-          <NoteField
-            value={noteDraft}
-            onChange={setNoteDraft}
-            isSleeping={isSleeping}
-          />
-          <p className="multi-hint">
-            Track sleep and wake cycles anytime. Multiple sessions in one day
-            are saved separately and added into that day’s total.
-          </p>
-        </section>
-
-        <MonthlyChart
-          data={monthData}
-          monthLabel={format(month, 'MMMM yyyy')}
-          onPrev={() => setMonth((m) => startOfMonth(addMonths(m, -1)))}
-          onNext={() => setMonth((m) => startOfMonth(addMonths(m, 1)))}
-          canGoNext={canGoNext}
-        />
-
-        <section className="panel" aria-labelledby="daily-totals-heading">
-          <div className="section-heading">
-            <div>
-              <h2 id="daily-totals-heading">Daily totals</h2>
-              <p>
-                {format(month, 'MMMM')} · {formatDuration(monthTotalSeconds)}{' '}
-                logged — tap a date to view sessions
-              </p>
-            </div>
+        {error && (
+          <div className="app-banner error" role="alert">
+            {error}
           </div>
-          <DailyTotals data={monthData} sessions={sessions} now={now} />
-        </section>
+        )}
+
+        {loading ? (
+          <div className="app-banner">Loading your sleep logs…</div>
+        ) : (
+          <>
+            <section
+              className="control-panel"
+              aria-labelledby="tracker-heading"
+            >
+              <h2 id="tracker-heading" className="visually-hidden">
+                Sleep and wake tracker
+              </h2>
+              <SleepToggle
+                isSleeping={isSleeping}
+                onToggle={toggle}
+                elapsedLabel={saving ? 'Saving…' : elapsedLabel}
+              />
+              <NoteField
+                value={noteDraft}
+                onChange={setNoteDraft}
+                isSleeping={isSleeping}
+              />
+              <p className="multi-hint">
+                Your sleep sessions are saved to Firebase in the{' '}
+                <strong>sleeping logs</strong> collection. Multiple sessions in
+                one day are stored separately and summed into that day’s total.
+              </p>
+            </section>
+
+            <MonthlyChart
+              data={monthData}
+              monthLabel={format(month, 'MMMM yyyy')}
+              onPrev={() => setMonth((m) => startOfMonth(addMonths(m, -1)))}
+              onNext={() => setMonth((m) => startOfMonth(addMonths(m, 1)))}
+              canGoNext={canGoNext}
+            />
+
+            <section className="panel" aria-labelledby="daily-totals-heading">
+              <div className="section-heading">
+                <div>
+                  <h2 id="daily-totals-heading">Daily totals</h2>
+                  <p>
+                    {format(month, 'MMMM')} · {formatDuration(monthTotalSeconds)}{' '}
+                    logged — tap a date to view sessions
+                  </p>
+                </div>
+              </div>
+              <DailyTotals
+                data={monthData}
+                sessions={sessions}
+                now={now}
+                saving={saving}
+                onUpdateSession={updateSession}
+                onDeleteSession={deleteSession}
+              />
+            </section>
+          </>
+        )}
       </main>
 
       <footer className="site-footer">
         <p>
-          <strong>Lumen Sleep</strong> is a free sleep tracker progressive web
-          app for logging sleep duration, wake times, notes, and monthly sleep
-          patterns.
+          <strong>Lumen Sleep</strong> syncs sleep duration, wake times, and
+          notes to your Firebase account.
         </p>
         <p>
           <a
@@ -145,6 +184,25 @@ function App() {
       </footer>
     </div>
   )
+}
+
+function App() {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="app auth-app">
+        <div className="atmosphere" aria-hidden="true" />
+        <main className="auth-card">
+          <p className="auth-loading">Checking your session…</p>
+        </main>
+      </div>
+    )
+  }
+
+  if (!user) return <AuthScreen />
+
+  return <TrackerApp />
 }
 
 export default App
